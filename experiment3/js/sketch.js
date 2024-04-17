@@ -1,79 +1,91 @@
-// sketch.js - purpose and description here
-// Author: Your Name
-// Date:
+// sketch.js
+// Author: Garrett Blake
+// Date: 4/17/2024
 
-// Here is how you might set up an OOP p5.js project
-// Note that p5.js looks for a file called sketch.js
+/* exported preload, setup, draw, placeTile */
 
-// Constants - User-servicable parts
-// In a longer project I like to put these in a separate file
-const VALUE1 = 1;
-const VALUE2 = 2;
+/* global generateGrid drawGrid */
 
-// Globals
-let myInstance;
-let canvasContainer;
-var centerHorz, centerVert;
+// sketch.js
 
-class MyClass {
-    constructor(param1, param2) {
-        this.property1 = param1;
-        this.property2 = param2;
+let rectangles = []; // Array to store the coordinates of each rectangle
+
+// Function to generate a random rectangle within the grid and store its coordinates
+function generateRectangle(grid) {
+  let rectWidth = floor(random(3, grid[0].length / 2)); // Random width for the rectangle
+  let rectHeight = floor(random(3, grid.length / 2)); // Random height for the rectangle
+  let startX = floor(random(0, grid[0].length - rectWidth)); // Random starting X position
+  let startY = floor(random(0, grid.length - rectHeight)); // Random starting Y position
+  
+  // Store the coordinates of the rectangle
+  rectangles.push({ x: startX, y: startY, width: rectWidth, height: rectHeight });
+}
+
+// Function to generate multiple rectangles, ensuring they are at least 2 spaces away from each other
+function generateRectangles(grid, count) {
+  for (let i = 0; i < count; i++) {
+    let attempts = 0;
+    let success = false;
+    while (attempts < 10 && !success) {
+      generateRectangle(grid);
+      success = true;
+      // Check if the newly generated rectangle collides with any existing rectangle
+      for (let j = 0; j < rectangles.length - 1; j++) {
+        let currentRect = rectangles[rectangles.length - 1];
+        let existingRect = rectangles[j];
+        if (currentRect.x < existingRect.x + existingRect.width + 2 &&
+            currentRect.x + currentRect.width + 2 > existingRect.x &&
+            currentRect.y < existingRect.y + existingRect.height + 2 &&
+            currentRect.y + currentRect.height + 2 > existingRect.y) {
+          // Collision detected, generate a new rectangle
+          success = false;
+          rectangles.pop(); // Remove the last generated rectangle
+          attempts++;
+          break;
+        }
+      }
     }
+  }
+}
 
-    myMethod() {
-        // code to run when method is called
+// Modify generateGrid function to include the random rectangles
+function generateGrid(numCols, numRows) {
+  let grid = [];
+  for (let i = 0; i < numRows; i++) {
+    let row = [];
+    for (let j = 0; j < numCols; j++) {
+      row.push("_");
     }
+    grid.push(row);
+  }
+  
+  // Add multiple random rectangles
+  generateRectangles(grid, floor(random(2, 11))); // Generate 2 to 10 rectangles
+  
+  // Place the rectangles in the grid
+  for (let i = 0; i < rectangles.length; i++) {
+    let rect = rectangles[i];
+    for (let y = rect.y; y < rect.y + rect.height; y++) {
+      for (let x = rect.x; x < rect.x + rect.width; x++) {
+        grid[y][x] = ".";
+      }
+    }
+  }
+  
+  return grid;
 }
 
-function resizeScreen() {
-  centerHorz = canvasContainer.width() / 2; // Adjusted for drawing logic
-  centerVert = canvasContainer.height() / 2; // Adjusted for drawing logic
-  console.log("Resizing...");
-  resizeCanvas(canvasContainer.width(), canvasContainer.height());
-  // redrawCanvas(); // Redraw everything based on new size
-}
+function drawGrid(grid) {
+  background(128);
 
-// setup() function is called once when the program starts
-function setup() {
-  // place our canvas, making it fit our container
-  canvasContainer = $("#canvas-container");
-  let canvas = createCanvas(canvasContainer.width(), canvasContainer.height());
-  canvas.parent("canvas-container");
-  // resize canvas is the page is resized
-
-  // create an instance of the class
-  myInstance = new MyClass("VALUE1", "VALUE2");
-
-  $(window).resize(function() {
-    resizeScreen();
-  });
-  resizeScreen();
-}
-
-// draw() function is called repeatedly, it's the main animation loop
-function draw() {
-  background(220);    
-  // call a method on the instance
-  myInstance.myMethod();
-
-  // Set up rotation for the rectangle
-  push(); // Save the current drawing context
-  translate(centerHorz, centerVert); // Move the origin to the rectangle's center
-  rotate(frameCount / 100.0); // Rotate by frameCount to animate the rotation
-  fill(234, 31, 81);
-  noStroke();
-  rect(-125, -125, 250, 250); // Draw the rectangle centered on the new origin
-  pop(); // Restore the original drawing context
-
-  // The text is not affected by the translate and rotate
-  fill(255);
-  textStyle(BOLD);
-  textSize(140);
-  text("p5*", centerHorz - 105, centerVert + 40);
-}
-
-// mousePressed() function is called once after every time a mouse button is pressed
-function mousePressed() {
-    // code to run when mouse is pressed
+  for(let i = 0; i < grid.length; i++) {
+    for(let j = 0; j < grid[i].length; j++) {
+      if (grid[i][j] == '_') {
+        placeTile(i, j, (floor(random(4))), 0);
+      }
+      if (grid[i][j] == '.') {
+        placeTile(i, j, floor(random(1, 5)), floor(random(21, 25)))
+      }
+    }
+  }
 }
