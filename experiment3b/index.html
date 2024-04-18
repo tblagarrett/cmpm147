@@ -2,7 +2,7 @@
 <html>
 <head>
 	<!-- This title is used for tabs and bookmarks -->
-	<title>Experiment 3 - Alternate Worlds</title>
+	<title>Experiment 3b - Alternate Worlds</title>
 
 	<!-- Use UTF character set, a good idea with any webpage -->
 	<meta charset="UTF-8" />
@@ -32,7 +32,7 @@
 	<main id="content">
 		<section>
 
-			<h1>Experiment 3 - Alternate Worlds</h1>
+			<h1>Experiment 3b - Alternate Worlds</h1>
 
 			<div class="minor-section">
 				<div id="canvas-container">
@@ -54,28 +54,29 @@
 
 			<div class="minor-section">
 				<h2>Description</h2>
-				<p>Dungeon:</p>
-				<p>For this first part, the goal was to understand how tilemaps work, mostly
-					through hardcoding in small details. A lot of time was spent here figuring out how the 
-					autotiling works. I got a lot of bug fixing experience in, and it built up
-					a good foundation for the second part
+				<p>Overworld:</p>
+				<p>The second half was all about using noise to generate a nice overworld location.
+					Because I had already worked on the autotiling in the other half, I was able to
+					transfer it over and I had more time to really embellish the scene. The end result
+					is a nice varied landscape that changes over time. To me, it is addicting to look at.
 				</p>
 			</div>
 
 			<div class="minor-section">
 				<h2>Technical</h2>
-				<p>Dungeon:</p>
-				<p>This is made possible by placing random rectangles and making sure they do not collide.
-					The rectangles are connected by the center if possible, and a chest is placed in a random
-					one of the "rooms." All of it is done without noise, which plans to be changed in the next half
+				<p>Overworld:</p>
+				<p>Using the same techniques to place tiles as the previous half, this scene makes a completely
+					different vibe. I used and customized perlin noise to make the 3 different effects: clouds,
+					water, and general terrain generation. The water changes over time using the 3rd dimension,
+					while the clouds simply scroll in a random direction
 				</p>
 			</div>
 
 			<div class="minor-section">
 				<h2>Reflection</h2>
-				<p>Compared to the previous assignment, I felt much more comfortable with my usage of ChatGPT.
-					This time, I felt like a collaborator in the process and I was able to get what I wanted done. It
-					felt a lot more productive than previously, partly because I spent more time with the code.
+				<p>Almost this entire half was without any ChatGPT, which is a bit of a pride point for me after
+					the first half. It is also the type of generation I am most interested in, world generation is
+					something I seem to find infinitely interesting.
 				</p>
 			</div>
 
