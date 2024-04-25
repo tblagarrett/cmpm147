@@ -2,7 +2,7 @@
 <html>
 <head>
 	<!-- This title is used for tabs and bookmarks -->
-	<title>Experiment 4a - Infinite Worlds</title>
+	<title>Experiment 4b - Infinite Worlds</title>
 
 	<!-- Use UTF character set, a good idea with any webpage -->
 	<meta charset="UTF-8" />
@@ -32,7 +32,7 @@
 	<main id="content">
 		<section>
 
-			<h1>Experiment 4a - Infinite Worlds</h1>
+			<h1>Experiment 4b - Infinite Worlds</h1>
 
 			<div class="minor-section">
 				<div id="canvas-container">
@@ -45,22 +45,25 @@
 
 			<div class="minor-section">
 				<h2>Description</h2>
-				<p>Create an infinite world depicting terrain. This world contains flatlands, water, and mountains. The mountains and flatlands have color blending,
-					while the water has a wave moving over time using a sin.
+				<p>This infinite world simply plays with a wave effect spreading out from where the player clicks their mouse. These waves will combine when overlapping
+					and dissipate over time. It plays with the assignment a bit, since without clicking it looks like nothing changed, but after clicking you see the movement
+					and color change. It was so much fun for me to play with that I made a second version of it without the color, so that it lags less.
 				</p>
 			</div>
 
 			<div class="minor-section">
 				<h2>Technical</h2>
-				<p>All of the physical adjustment is done using a noise map based on the seed, the squares are translated up based on the value and split into categories.
-					The water does not have this displacement, and instead uses a sin function using time to determine its position
+				<p>When a tile is clicked, a wave is generated at that position, causing nearby tiles to be displaced. The wave effect gradually diminishes over time 
+					and distance. Each tile's movement is calculated based on its distance from the wave origin and the time since the wave was generated. The height of 
+					each tile is determined by adding all active waves in that spot. The color blends between 2 random colors, one for up and one for down, changing
+					the color based on the height.
 				</p>
 			</div>
 
 			<div class="minor-section">
 				<h2>Reflection</h2>
-				<p>This was a great first of 3 experiments for this week. I got a good understanding of how the grid works, and how functions can be applied to it. I also
-					got some good ideas for the next experiments!
+				<p>I LOVED this one. the wave effect is really something that i enjoy, especially in isometric view. It took a lot of ChatGPT, but I really felt like my
+					vision for the project got through to the end--which is not something not always easy to do.
 				</p>
 			</div>
 
