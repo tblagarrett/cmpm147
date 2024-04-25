@@ -14,7 +14,6 @@
     p3_drawAfter
 */
 
-let positions = {}
 let worldSeed
 
 function p3_preload() {}
@@ -38,15 +37,15 @@ function p3_tileHeight() {
 
 let [tw, th] = [p3_tileWidth(), p3_tileHeight()];
 
-let clicks = {};
-
 function p3_drawBefore() {
   background(0);
 }
 
+let clicks = {};
+
 function p3_tileClicked(i, j) {
-  // Record the time of the click
-  const clickTime = millis();
+  let key = [i, j];
+  clicks[key] = 1 + (clicks[key] | 0);
 }
 
 function p3_drawTile(i, j) {
@@ -55,15 +54,6 @@ function p3_drawTile(i, j) {
     fill(240, 200);
   } else {
     fill(255, 200);
-  }
-
-  if (positions[i + ',' + j]) {
-    positions[i + ',' + j] += 1
-    translate(0, positions[i + ',' + j])
-
-    if (positions[i + ',' + j] > 50) {
-      noFill()
-    }
   }
 
   // Render the tile with final blended color
@@ -75,13 +65,33 @@ function p3_drawTile(i, j) {
   vertex(tw, 0);
   vertex(0, -th);
   endShape(CLOSE);
+
+  let n = clicks[[i, j]] | 0;
+  if (n % 2 == 1) {
+    fill(0, 0, 0, 32);
+    ellipse(0, 0, 10, 5);
+    translate(0, -10);
+    fill(255, 255, 100, 128);
+    ellipse(0, 0, 10, 10);
+  }
+
   pop();
 }
 
 function p3_drawSelectedTile(i, j) {
-  if (!positions[i + ',' + j]) {
-    positions[i + ',' + j] = 1; // Initialize position if it doesn't exist
-  }
+  noFill();
+  stroke(0, 255, 0, 128);
+
+  beginShape();
+  vertex(-tw, 0);
+  vertex(0, th);
+  vertex(tw, 0);
+  vertex(0, -th);
+  endShape(CLOSE);
+
+  noStroke();
+  fill(0);
+  text("tile " + [i, j], 0, 0);
 }
 
 function p3_drawAfter() {}
