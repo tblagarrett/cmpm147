@@ -63,7 +63,7 @@ function preload() {
 
 function setup() {
   let canvas = createCanvas(800, 400);
-  canvas.parent("container");
+  canvas.parent("canvas-container");
 
   camera_offset = new p5.Vector(-width / 2, height / 2);
   camera_velocity = new p5.Vector(0, 0);
@@ -74,7 +74,7 @@ function setup() {
 
   let label = createP();
   label.html("World key: ");
-  label.parent("container");
+  label.parent("canvas-container");
 
   let input = createInput("xyzzy");
   input.parent(label);
@@ -82,7 +82,7 @@ function setup() {
     rebuildWorld(input.value());
   });
 
-  createP("Arrow keys scroll. Clicking changes tiles.").parent("container");
+  createP("Arrow keys and WASD scroll.").parent("canvas-container");
 
   rebuildWorld(input.value());
 }
@@ -112,16 +112,29 @@ function mouseClicked() {
 function draw() {
   // Keyboard controls!
   if (keyIsDown(LEFT_ARROW)) {
-    camera_velocity.x -= 1;
+    camera_velocity.x -= .6;
   }
   if (keyIsDown(RIGHT_ARROW)) {
-    camera_velocity.x += 1;
+    camera_velocity.x += .6;
   }
   if (keyIsDown(DOWN_ARROW)) {
-    camera_velocity.y -= 1;
+    camera_velocity.y -= .6;
   }
   if (keyIsDown(UP_ARROW)) {
-    camera_velocity.y += 1;
+    camera_velocity.y += .6;
+  }
+  // ADDED WASD KEYS
+  if (keyIsDown(65)) {
+    camera_velocity.x -= .6;
+  }
+  if (keyIsDown(68)) {
+    camera_velocity.x += .6;
+  }
+  if (keyIsDown(83)) {
+    camera_velocity.y -= .6;
+  }
+  if (keyIsDown(87)) {
+    camera_velocity.y += .6;
   }
 
   let camera_delta = new p5.Vector(0, 0);
@@ -144,7 +157,7 @@ function draw() {
     window.p3_drawBefore();
   }
 
-  let overdraw = 0.1;
+  let overdraw = .25;
 
   let y0 = Math.floor((0 - overdraw) * tile_rows);
   let y1 = Math.floor((1 + overdraw) * tile_rows);

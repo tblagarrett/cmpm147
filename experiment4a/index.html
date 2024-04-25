@@ -2,7 +2,7 @@
 <html>
 <head>
 	<!-- This title is used for tabs and bookmarks -->
-	<title>Experiment 1 - Getting Started</title>
+	<title>Experiment 4a - Infinite Worlds</title>
 
 	<!-- Use UTF character set, a good idea with any webpage -->
 	<meta charset="UTF-8" />
@@ -23,45 +23,44 @@
 	<!-- Link to javascript files - DEFER waits until all elements are rendered -->
     <script type="text/javascript" src="../js/site.js" DEFER></script>
 	<!-- Use me for a JavaScript OOP Project -->
+	<script type="text/javascript" src="./js/xxhash.min.js" DEFER></script>
 	<script type="text/javascript" src="./js/engine.js" DEFER></script>
 	<script type="text/javascript" src="./js/my_world.js" DEFER></script>
-	<script type="text/javascript" src="./js/xxhash.min.js" DEFER></script>
 </head>
 <body>
 	<!-- Style this page by changing the CSS in ../css/site.css or css/experiment.css -->
 	<main id="content">
 		<section>
 
-			<h1>Experiment 1 - Getting Started</h1>
+			<h1>Experiment 4a - Infinite Worlds</h1>
 
 			<div class="minor-section">
 				<div id="canvas-container">
 					<!-- canvas will be added here -->
 				</div>
                 <div class="fullscreen-box">
-					<button id="reimagine">Reimagine</button>
                     <button id="fullscreen">Fullscreen</button>
                 </div>
 			</div>
 
 			<div class="minor-section">
 				<h2>Description</h2>
-				<p>Create a unique generator on glitch.com and move the working generator to my portfolio page. Work to understand how generators can work
-					and the different languages involved in web development.
+				<p>Create an infinite world depicting terrain. This world contains flatlands, water, and mountains. The mountains and flatlands have color blending,
+					while the water has a wave moving over time using a sin.
 				</p>
 			</div>
 
 			<div class="minor-section">
 				<h2>Technical</h2>
-				<p>A grammar is defined with simple replacement tokens. A replacer() function picks a random replacement for any token that appears in the text.
-					My personal contribution was solely by changing the different words that can be shuffled in, to make it a self-help book title generator
+				<p>All of the physical adjustment is done using a noise map based on the seed, the squares are translated up based on the value and split into categories.
+					The water does not have this displacement, and instead uses a sin function using time to determine its position
 				</p>
 			</div>
 
 			<div class="minor-section">
 				<h2>Reflection</h2>
-				<p>I did not feel particularly motivated to work on this project, and so I simply did what was necessary to get it done. Perhaps I may return to
-					work on it further, but for now this is where it will leave off.
+				<p>This was a great first of 3 experiments for this week. I got a good understanding of how the grid works, how functions can be applied to it. I also
+					got some good ideas for the next experiments!
 				</p>
 			</div>
 
