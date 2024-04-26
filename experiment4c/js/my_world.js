@@ -25,6 +25,7 @@ function p3_worldKeyChanged(key) {
   worldSeed = XXH.h32(key, 0);
   noiseSeed(worldSeed);
   randomSeed(worldSeed);
+  tileState = {}
 }
 
 function p3_tileWidth() {
@@ -48,13 +49,48 @@ function p3_tileClicked(i, j) {
   clicks[key] = 1 + (clicks[key] | 0);
 }
 
+let tileState = {}; // Object to store the state of each tile
+let lastUpdateFrame = 0; // Keep track of the last frame when tile states were updated
+
 function p3_drawTile(i, j) {
-  // Get the base color for the tile
-  if (XXH.h32("tile:" + [i, j], worldSeed) % 4 == 0) {
-    fill(240, 200);
-  } else {
-    fill(255, 200);
+  // Initialize tile state if not already initialized
+  if (!tileState.hasOwnProperty([i, j])) {
+    let downtime = Math.floor(random(4, 101)); // Random downtime between 4 and 100
+    let lifespan = Math.floor(random(1, 16)); // Random lifespan between 1 and 15
+    tileState[[i, j]] = {
+      downtime: downtime,
+      lifespan: lifespan,
+      clicks: random() < 0.99 ? 0 : 1 // Randomly assign 0 or 1 clicks with 90% chance of 0
+    };
   }
+
+  // Update tile states every second
+  if (frameCount - lastUpdateFrame >= 60) { // 60 frames per second
+    for (let key in tileState) {
+      let state = tileState[key];
+      if (state.clicks % 2 === 0) {
+        // Downtime state
+        state.downtime--;
+        if (state.downtime <= 0) {
+          // Switch to lifespan state when downtime reaches 0
+          state.clicks++;
+          state.lifespan--; // Decrease lifespan by 1
+        }
+      } else {
+        // Lifespan state
+        state.lifespan--;
+        if (state.lifespan <= 0) {
+          // Reset to downtime state when lifespan reaches 0
+          state.clicks++;
+          state.downtime = Math.floor(random(4, 101)); // Random downtime between 4 and 100
+        }
+      }
+    }
+    lastUpdateFrame = frameCount;
+  }
+
+  // Get the base color for the tile (starting as black)
+  fill(0);
 
   // Render the tile with final blended color
   noStroke();
@@ -66,11 +102,9 @@ function p3_drawTile(i, j) {
   vertex(0, -th);
   endShape(CLOSE);
 
-  let n = clicks[[i, j]] | 0;
-  if (n % 2 == 1) {
-    fill(0, 0, 0, 32);
-    ellipse(0, 0, 10, 5);
-    translate(0, -10);
+  let n = tileState[[i, j]].clicks;
+  if (n % 2 === 1) {
+    // Draw additional graphics in lifespan state
     fill(255, 255, 100, 128);
     ellipse(0, 0, 10, 10);
   }
@@ -78,20 +112,9 @@ function p3_drawTile(i, j) {
   pop();
 }
 
+
+
 function p3_drawSelectedTile(i, j) {
-  noFill();
-  stroke(0, 255, 0, 128);
-
-  beginShape();
-  vertex(-tw, 0);
-  vertex(0, th);
-  vertex(tw, 0);
-  vertex(0, -th);
-  endShape(CLOSE);
-
-  noStroke();
-  fill(0);
-  text("tile " + [i, j], 0, 0);
 }
 
 function p3_drawAfter() {}
