@@ -23,9 +23,8 @@
 	<!-- Link to javascript files - DEFER waits until all elements are rendered -->
     <script type="text/javascript" src="../js/site.js" DEFER></script>
 	<!-- Use me for a JavaScript OOP Project -->
-	<script type="text/javascript" src="./js/xxhash.min.js" DEFER></script>
-	<script type="text/javascript" src="./js/engine.js" DEFER></script>
-	<script type="text/javascript" src="./js/my_world.js" DEFER></script>
+	<script type="text/javascript" src="./js/my_design.js" DEFER></script>
+	<script type="text/javascript" src="./js/sketch.js" DEFER></script>
 </head>
 <body>
 	<!-- Style this page by changing the CSS in ../css/site.css or css/experiment.css -->
@@ -35,12 +34,29 @@
 			<h1>Experiment 5 - Evolutionary Impressions</h1>
 
 			<div class="minor-section">
-				<div id="canvas-container">
-					<!-- canvas will be added here -->
+				<div class="fullscreen-box">
+					<select id="dropper"></select>
+					<button id="restart">
+						restart
+					  </button>
 				</div>
-                <div class="fullscreen-box">
-                    <button id="fullscreen">Fullscreen</button>
-                </div>
+				
+				<p>
+					Mutation rate (<span id="rate"></span>%):<br /><input
+					  id="slider"
+					  type="range"
+					  min="1"
+					  max="100"
+					  value="100"
+					/>
+				  </p>
+
+				<p id="active"></p>
+				<p>Active score: <span id="activeScore"></span></p>
+				<p>Exploration rate: <span id="fpsCounter"></span> fps</p>
+				<p id="best"></p>
+				<p>Best score: <span id="bestScore"></span></p>
+				<p id="memory" data-max-items="16"></p>
 			</div>
 
 			<div class="minor-section">
