@@ -29,8 +29,8 @@ function getInspirations() {
       shape: "line"
     },
     {
-      name: "Triangle",
-      assetUrl: "./img/Triangular_Prism.png",
+      name: "Phineas",
+      assetUrl: "./img/phineas.jpg",
       shape: "triangle"
     },
   ];
@@ -54,16 +54,37 @@ function initDesign(inspiration) {
                         fill: random(255)})
       }
     case "triangle":
+      let sideLength = width/4
+
       for(let i = 0; i < 500; i++) {
+        // Random position for the center of the triangle
+        let centerX = random(width);
+        let centerY = random(height);
+
+        // Random rotation angle in radians
+        let rotation = random(TWO_PI);
+
+        // Calculate vertices of equilateral triangle
+        let x1 = centerX;
+        let y1 = centerY - sqrt(3) * sideLength / 3;
+        let x2 = centerX - sideLength / 2;
+        let y2 = centerY + sqrt(3) * sideLength / 6;
+        let x3 = centerX + sideLength / 2;
+        let y3 = centerY + sqrt(3) * sideLength / 6;
+
+        // Store triangle data
         design.fg.push({
-          x1: random(width),
-          x2: random(width),
-          x3: random(width),
-          y1: random(height),
-          y2: random(height),
-          y3: random(height),
-          color: random(255)   
-        })
+          centerX: centerX,
+          centerY: centerY,
+          rotation: rotation,
+          x1: x1,
+          y1: y1,
+          x2: x2,
+          y2: y2,
+          x3: x3,
+          y3: y3,
+          color: color(random(255), random(255), random(255))
+        });
       }
       break
     case "line":
@@ -142,13 +163,42 @@ function mutateDesign(design, inspiration, rate) {
       }
     case "triangle":
       for (let tri of design.fg) {
-        tri.color = mut(tri.color, 0, 255, rate)
-        tri.x1 = mut(tri.x1, 1, width-1, rate)
-        tri.x2 = mut(tri.x2, 1, width-1, rate)
-        tri.x3 = mut(tri.x3, 1, width-1, rate)
-        tri.y1 = mut(tri.y1, 1, height-1, rate)
-        tri.y2 = mut(tri.y2, 1, height-1, rate)
-        tri.y3 = mut(tri.y3, 1, height-1, rate)
+        // Mutate center x and center y
+        tri.centerX = triangleMut(tri.centerX, 0, width, rate);
+        tri.centerY = triangleMut(tri.centerY, 0, height, rate);
+
+        // Calculate vertices of equilateral triangle based on mutated center
+        let sideLength = width / 4
+        let offset = sqrt(3) * sideLength / 6;
+
+        tri.x1 = tri.centerX;
+        tri.y1 = tri.centerY - offset;
+        tri.x2 = tri.centerX - sideLength / 2;
+        tri.y2 = tri.centerY + offset / 2;
+        tri.x3 = tri.centerX + sideLength / 2;
+        tri.y3 = tri.centerY + offset / 2;
+
+        // Mutate rotation
+        tri.rotation = triangleMut(tri.rotation, 0, TWO_PI, rate);
+
+        // Calculate rotated vertices of equilateral triangle based on mutated rotation
+        let rotatedX1 = tri.centerX + cos(tri.rotation) * (tri.x1 - tri.centerX) - sin(tri.rotation) * (tri.y1 - tri.centerY);
+        let rotatedY1 = tri.centerY + sin(tri.rotation) * (tri.x1 - tri.centerX) + cos(tri.rotation) * (tri.y1 - tri.centerY);
+        let rotatedX2 = tri.centerX + cos(tri.rotation) * (tri.x2 - tri.centerX) - sin(tri.rotation) * (tri.y2 - tri.centerY);
+        let rotatedY2 = tri.centerY + sin(tri.rotation) * (tri.x2 - tri.centerX) + cos(tri.rotation) * (tri.y2 - tri.centerY);
+        let rotatedX3 = tri.centerX + cos(tri.rotation) * (tri.x3 - tri.centerX) - sin(tri.rotation) * (tri.y3 - tri.centerY);
+        let rotatedY3 = tri.centerY + sin(tri.rotation) * (tri.x3 - tri.centerX) + cos(tri.rotation) * (tri.y3 - tri.centerY);
+
+        // Update vertices
+        tri.x1 = rotatedX1;
+        tri.y1 = rotatedY1;
+        tri.x2 = rotatedX2;
+        tri.y2 = rotatedY2;
+        tri.x3 = rotatedX3;
+        tri.y3 = rotatedY3;
+
+        // Mutate color
+        tri.color = triangleMut(tri.color, 0, 255, rate);
       }
       break
     case "line":
@@ -170,6 +220,11 @@ function mutateDesign(design, inspiration, rate) {
   }
 }
 
+function triangleMut(num, min, max, rate) {
+  let mutationRange = rate * (max - min); // Calculate mutation range based on the allowed range and the mutation rate
+  let mutatedNum = num + randomGaussian(0, mutationRange / 10); // Add a Gaussian-distributed mutation to the current value
+  return constrain(mutatedNum, min, max); // Constrain the mutated value within the allowed range
+}
 
 function mut(num, min, max, rate) {
     return constrain(randomGaussian(num, (rate * (max - min)) / 10), min, max);
