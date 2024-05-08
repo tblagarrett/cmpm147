@@ -5,7 +5,7 @@ function getInspirations() {
   return [
     {
       name: "The Bigweld Ball", 
-      assetUrl: "./img/exp05Bigweld.jpeg",
+      assetUrl: "./img/bigweldHigherResBigger.jpg",
       shape: "circle"
     },
     {
