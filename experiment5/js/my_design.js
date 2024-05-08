@@ -9,11 +9,6 @@ function getInspirations() {
       shape: "circle"
     },
     {
-      name: "Stanced Up", 
-      assetUrl: "./img/exp05inspo2.jpg",
-      shape: "line"
-    },
-    {
       name: "JJK Spoiler", 
       assetUrl: "./img/exp05inspo3.jpg",
       shape: "line"
